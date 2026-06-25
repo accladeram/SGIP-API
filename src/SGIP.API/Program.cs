@@ -5,17 +5,14 @@ using SGIP.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// CONFIGURACIÓN DE CORS TOTALMENTE ABIERTO PARA DESCARTE EN PRODUCCIÓN
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        var allowedOrigins = builder.Configuration["CORS_ALLOWED_ORIGINS"]?
-            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            ?? new[] { "http://localhost:3000" };
-
-        policy.WithOrigins(allowedOrigins)
-              .AllowAnyHeader()
-              .AllowAnyMethod(); 
+        policy.AllowAnyOrigin()   // Habilita el acceso desde cualquier URL del mundo (Vercel, Localhost, etc.)
+              .AllowAnyHeader()   // Permite headers personalizados como X-Idempotency-Key
+              .AllowAnyMethod();  // Permite GET, POST, PUT, DELETE, OPTIONS
     });
 });
 
@@ -46,6 +43,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
+// MANEJADOR GLOBAL DE EXCEPCIONES
 app.UseExceptionHandler(exceptionHandlerApp =>
     exceptionHandlerApp.Run(async context =>
     {
