@@ -7,19 +7,17 @@ using SGIP.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// CONFIGURACIÓN DE CORS TOTALMENTE ABIERTO PARA DESCARTE EN PRODUCCIÓN
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.AllowAnyOrigin()   // Habilita el acceso desde cualquier URL del mundo (Vercel, Localhost, etc.)
-              .AllowAnyHeader()   // Permite headers personalizados como X-Idempotency-Key
-              .AllowAnyMethod();  // Permite GET, POST, PUT, DELETE, OPTIONS
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
 });
 
 builder.Services.AddControllers();
-
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "SGIP API", Version = "v1" });
@@ -30,14 +28,10 @@ builder.Services.AddSwaggerGen(c =>
         Type = SecuritySchemeType.ApiKey,
         Description = "Clave de idempotencia"
     });
-
     var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-
     if (File.Exists(xmlPath))
-    {
         c.IncludeXmlComments(xmlPath);
-    }
 });
 
 builder.Services.AddApplication();
@@ -45,7 +39,24 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
-// MANEJADOR GLOBAL DE EXCEPCIONES
+// Migraciones con logging detallado
+using (var scope = app.Services.CreateScope())
+{
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    try
+    {
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        logger.LogInformation(">>> Connection string: {conn}", db.Database.GetConnectionString());
+        db.Database.Migrate();
+        logger.LogInformation(">>> Migrations applied successfully");
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, ">>> Migration failed: {msg}", ex.Message);
+        throw;
+    }
+}
+
 app.UseExceptionHandler(exceptionHandlerApp =>
     exceptionHandlerApp.Run(async context =>
     {
@@ -61,7 +72,6 @@ app.UseExceptionHandler(exceptionHandlerApp =>
         await context.Response.WriteAsJsonAsync(new { error = message });
     }));
 
-// CONFIGURACIÓN DE SWAGGER UI
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -69,25 +79,9 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
-
-app.UseRouting();
-
 app.UseCors("AllowFrontend");
+app.UseRouting();
 app.UseHttpsRedirection();
-
-
-
 app.UseAuthorization();
-
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
-}
-
-
 app.MapControllers();
-
-
-
 app.Run();
