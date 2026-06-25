@@ -67,11 +67,13 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
-app.UseHttpsRedirection();
 
 app.UseRouting();
 
 app.UseCors("AllowFrontend");
+app.UseHttpsRedirection();
+
+
 
 app.UseAuthorization();
 
