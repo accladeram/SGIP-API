@@ -28,7 +28,7 @@ No requiere autenticación. Usar `userId` de prueba: `user-001` o `user-002`.
 
 - PostgreSQL (Railway)
 
-\- Swagger / OpenAPI
+- Swagger / OpenAPI
 
 
 
@@ -60,7 +60,7 @@ Las dependencias fluyen hacia adentro: `API → Application → Domain`. `Infras
 
 
 
-*\*Patrones aplicados\*\*
+**Patrones aplicados**
 
 
 
@@ -70,7 +70,7 @@ Las dependencias fluyen hacia adentro: `API → Application → Domain`. `Infras
 
 
 
-\*\*Lógica financiera\*\*
+**Lógica financiera**
 
 
 
@@ -104,11 +104,11 @@ TEA base: 24%. Monto: $500–$50,000. Plazo: 6–60 meses.
 
 
 
-\## Correr localmente
+## Correr localmente
 
 
 
-\*\*Prerrequisitos:\*\* .NET 10 SDK, PostgreSQL 14+
+**Prerrequisitos:** .NET 10 SDK, PostgreSQL 14+
 
 
 
@@ -162,7 +162,7 @@ Swagger en: `http://localhost:8080/swagger`
 
 
 
-\*\*Tests\*\*
+**Tests**
 
 
 
