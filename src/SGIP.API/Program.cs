@@ -5,10 +5,6 @@ using SGIP.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-
-
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -19,10 +15,11 @@ builder.Services.AddCors(options =>
 
         policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+              .AllowAnyMethod(); 
     });
 });
+
+builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -34,6 +31,7 @@ builder.Services.AddSwaggerGen(c =>
         Type = SecuritySchemeType.ApiKey,
         Description = "Clave de idempotencia"
     });
+
     var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
@@ -42,6 +40,7 @@ builder.Services.AddSwaggerGen(c =>
         c.IncludeXmlComments(xmlPath);
     }
 });
+
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -62,15 +61,22 @@ app.UseExceptionHandler(exceptionHandlerApp =>
         await context.Response.WriteAsJsonAsync(new { error = message });
     }));
 
+// CONFIGURACIÓN DE SWAGGER UI
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "SGIP API v1");
     c.RoutePrefix = "swagger";
 });
-app.UseCors("AllowFrontend");
+
 app.UseHttpsRedirection();
+
+app.UseRouting();
+
+app.UseCors("AllowFrontend");
+
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
