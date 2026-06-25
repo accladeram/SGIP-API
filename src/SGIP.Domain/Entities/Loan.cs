@@ -9,14 +9,12 @@ public class Loan
     public Guid Id { get; set; }
     public required string UserId { get; set; } 
     public decimal Amount { get; set; }
-    public int Term { get; set; } // meses
+    public int Term { get; set; }
     public decimal InterestRate { get; set; } // TEA
     public LoanType LoanType { get; set; }
     public LoanStatus Status { get; set; }
     public decimal MonthlyPayment { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-
-    // Relación de navegación hacia el cronograma
     public virtual ICollection<PaymentSchedule> PaymentSchedules { get; set; } = new List<PaymentSchedule>();
 }

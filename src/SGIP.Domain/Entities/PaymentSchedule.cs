@@ -15,7 +15,5 @@ public class PaymentSchedule
     public decimal Interest { get; set; }
     public decimal RemainingBalance { get; set; }
     public ScheduleStatus Status { get; set; }
-
-    // Propiedad de navegación inversa
     public virtual Loan Loan { get; set; } = null!;
 }
