@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SGIP.Application;
 using SGIP.Infrastructure;
-using SGIP.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +37,6 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
-
 app.UseExceptionHandler(exceptionHandlerApp =>
     exceptionHandlerApp.Run(async context =>
     {
@@ -64,7 +61,7 @@ app.UseSwaggerUI(c =>
 
 app.UseCors("AllowFrontend");
 app.UseRouting();
-app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
 app.Run();
