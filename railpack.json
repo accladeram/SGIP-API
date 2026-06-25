@@ -1,0 +1,8 @@
+{
+  "build": {
+    "command": "dotnet publish src/SGIP.Presentation/SGIP.Presentation.csproj -c Release -o out"
+  },
+  "deploy": {
+    "command": "dotnet out/SGIP.Presentation.dll"
+  }
+}
