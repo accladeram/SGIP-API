@@ -39,23 +39,6 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
-// Migraciones con logging detallado
-using (var scope = app.Services.CreateScope())
-{
-    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-    try
-    {
-        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        logger.LogInformation(">>> Connection string: {conn}", db.Database.GetConnectionString());
-        db.Database.Migrate();
-        logger.LogInformation(">>> Migrations applied successfully");
-    }
-    catch (Exception ex)
-    {
-        logger.LogError(ex, ">>> Migration failed: {msg}", ex.Message);
-        throw;
-    }
-}
 
 app.UseExceptionHandler(exceptionHandlerApp =>
     exceptionHandlerApp.Run(async context =>

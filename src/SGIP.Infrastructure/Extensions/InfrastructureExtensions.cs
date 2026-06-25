@@ -1,1 +1,0 @@
-namespace SGIP.Infrastructure.Extensions;
