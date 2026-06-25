@@ -1,8 +1,11 @@
 {
+  "toolchain": {
+    "dotnet": "10.0"
+  },
   "build": {
-    "command": "dotnet publish src/SGIP.Presentation/SGIP.Presentation.csproj -c Release -o out"
+    "command": "dotnet publish src/SGIP.API/SGIP.API.csproj -c Release -o out"
   },
   "deploy": {
-    "command": "dotnet out/SGIP.Presentation.dll"
+    "command": "dotnet out/SGIP.API.dll"
   }
 }
