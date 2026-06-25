@@ -8,4 +8,4 @@
   "deploy": {
     "command": "dotnet out/SGIP.API.dll"
   }
-}
+} 
