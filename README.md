@@ -1,4 +1,4 @@
-\# SGIP - Sistema de Gestión de Inversiones y Préstamos
+# SGIP - Sistema de Gestión de Inversiones y Préstamos
 
 
 
@@ -14,29 +14,29 @@ No requiere autenticación. Usar `userId` de prueba: `user-001` o `user-002`.
 
 
 
-\---
+---
 
 
 
-\## Tecnologías
+## Tecnologías
 
 
 
-\- .NET 10 / ASP.NET Core Web API
+- .NET 10 / ASP.NET Core Web API
 
-\- Entity Framework Core + Npgsql
+- Entity Framework Core + Npgsql
 
-\- PostgreSQL (Railway)
+- PostgreSQL (Railway)
 
 \- Swagger / OpenAPI
 
 
 
-\---
+---
 
 
 
-\## Arquitectura
+## Arquitectura
 
 
 
@@ -60,13 +60,13 @@ Las dependencias fluyen hacia adentro: `API → Application → Domain`. `Infras
 
 
 
-\*\*Patrones aplicados\*\*
+*\*Patrones aplicados\*\*
 
 
 
-\- Repository + Unit of Work: abstrae el acceso a datos y garantiza que operaciones relacionadas (ej: aprobar préstamo + crear transacción de desembolso) sean atómicas.
+- Repository + Unit of Work: abstrae el acceso a datos y garantiza que operaciones relacionadas (ej: aprobar préstamo + crear transacción de desembolso) sean atómicas.
 
-\- Strategy: separa los algoritmos de cálculo de cuotas. `FrenchLoanStrategy` (sistema francés, cuota fija) y `GermanLoanStrategy` (sistema alemán, cuota decreciente) son intercambiables sin modificar el servicio.
+- Strategy: separa los algoritmos de cálculo de cuotas. `FrenchLoanStrategy` (sistema francés, cuota fija) y `GermanLoanStrategy` (sistema alemán, cuota decreciente) son intercambiables sin modificar el servicio.
 
 
 
@@ -144,13 +144,13 @@ dotnet restore
 
 
 
-\# Aplicar migraciones
+# Aplicar migraciones
 
 dotnet ef database update --project ../SGIP.Infrastructure --startup-project .
 
 
 
-\# Levantar en puerto 8080
+# Levantar en puerto 8080
 
 dotnet run --urls "http://localhost:8080"
 
